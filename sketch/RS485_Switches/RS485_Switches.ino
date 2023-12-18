@@ -27,6 +27,8 @@ Adafruit_PCF8575 gpioInputs;
 
 #define inputsAddr  0x20     // i2c address for gpio inputs
 
+#define INT_PIN 2            // ATTiny PA6 = Arduino pin 2 for gpio expander interrupt pin
+
 // rs485 driver/receiver enable pin
 #define DE_PIN 3             // ATTiny PA7 = Arduino pin 3
 #define RE_PIN 3
@@ -41,52 +43,52 @@ static void buttonHandler(uint8_t btnId, uint8_t btnState) {
       case 0:
         rs485.println("0");
         break;
-     case 1:
+      case 1:
         rs485.println("1");
         break;
-     case 2:
+      case 2:
         rs485.println("2");
         break;
-     case 3:
+      case 3:
         rs485.println("3");
         break;
-     case 4:
+      case 4:
         rs485.println("4");
         break;
-     case 5:
+      case 5:
         rs485.println("5");
         break;
-     case 6:
+      case 6:
         rs485.println("a");
         break;
-     case 7:
+      case 7:
         rs485.println("b");
         break;
-     case 8:
+      case 8:
         rs485.println("c");
         break;
-     case 9:
+      case 9:
         rs485.println("d");
         break;
-     case 10:
+      case 10:
         rs485.println("e");
         break;
-     case 11:
+      case 11:
         rs485.println("f");
         break;
-     case 12:
+      case 12:
         rs485.println("12");
         break;
-     case 13:
+      case 13:
         rs485.println("13");
         break;
-     case 14:
+      case 14:
         rs485.println("14");
         break;
-     case 15:
+      case 15:
         rs485.println("15");
         break;
-     
+
       default:
         // do nothing
         break;
@@ -153,6 +155,9 @@ void setup() {
     rs485.println("Failed to init PCF8575");
     while (1);
   }
+
+  pinMode(INT_PIN, INPUT_PULLUP);         // gpio expander interrupt pin gets pulled high
+
   for (uint8_t i = 0; i < 16; i++) {
     gpioInputs.pinMode(i, INPUT_PULLUP);  // configure all PCF8575 pins as inputs with pull ups
   }
